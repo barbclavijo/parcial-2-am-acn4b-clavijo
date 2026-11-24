@@ -25,4 +25,18 @@
     <string name="nav_events">Eventos</string>
     <string name="nav_profile">Perfil</string>
     <string name="nav_coming_soon">Próximamente disponible</string>
+    <string name="login_portal_subtitle">Portal de Socios y Reservas</string>
+    <string name="label_email">Email</string>
+    <string name="hint_email">socio@club.com</string>
+    <string name="label_password">Contraseña</string>
+    <string name="hint_password">Tu contraseña</string>
+    <string name="btn_toggle_password_show">Mostrar</string>
+    <string name="btn_toggle_password_hide">Ocultar</string>
+    <string name="forgot_password">¿Olvidaste tu clave?</string>
+    <string name="remember_session">Recordar mi sesión</string>
+    <string name="btn_login">Iniciar Sesión</string>
+    <string name="error_empty_fields">Completá ambos campos para continuar</string>
+    <string name="error_invalid_email">Ingresá un email válido</string>
+    <string name="error_invalid_credentials">Socio o contraseña incorrectos</string>
+    <string name="new_member_link">Soy nuevo socio / Quiero asociarme</string>
 </resources>
