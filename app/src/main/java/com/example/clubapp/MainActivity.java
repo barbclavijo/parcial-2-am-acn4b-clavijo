@@ -19,7 +19,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        TextView tvMemberName = findViewById(R.id.tv_member_name);
+        String memberNameFromLogin = getIntent().getStringExtra(LoginActivity.EXTRA_MEMBER_NAME);
+        if (memberNameFromLogin != null) {
+            tvMemberName.setText(memberNameFromLogin);
+        }
         containerRegistrations = findViewById(R.id.container_registrations);
         tvEmptyState = findViewById(R.id.tv_empty_state);
 
