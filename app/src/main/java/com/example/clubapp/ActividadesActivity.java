@@ -72,7 +72,7 @@ public class ActividadesActivity extends AppCompatActivity {
                 startActivity(new android.content.Intent(this, EventosActivity.class))
         );
         findViewById(R.id.nav_profile).setOnClickListener(v ->
-                Toast.makeText(this, R.string.nav_coming_soon, Toast.LENGTH_SHORT).show()
+                startActivity(new android.content.Intent(this, PerfilActivity.class))
         );
     }
 

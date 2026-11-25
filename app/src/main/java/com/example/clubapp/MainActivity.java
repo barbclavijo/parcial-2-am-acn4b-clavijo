@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this, EventosActivity.class))
         );
         findViewById(R.id.nav_profile).setOnClickListener(v ->
-                Toast.makeText(this, R.string.nav_coming_soon, Toast.LENGTH_SHORT).show()
+                startActivity(new Intent(MainActivity.this, PerfilActivity.class))
         );
     }
 
