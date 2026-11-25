@@ -1,42 +1,56 @@
 package com.example.clubapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private static final String SOURCE_EVENT_1 = "event_padel";
+    private static final String SOURCE_EVENT_2 = "event_asado";
 
     private LinearLayout containerRegistrations;
     private TextView tvEmptyState;
-    private int registrationCounter = 0;
+
+    private Button eventButton1;
+    private Button eventButton2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         TextView tvMemberName = findViewById(R.id.tv_member_name);
         String memberNameFromLogin = getIntent().getStringExtra(LoginActivity.EXTRA_MEMBER_NAME);
         if (memberNameFromLogin != null) {
             tvMemberName.setText(memberNameFromLogin);
         }
+
         containerRegistrations = findViewById(R.id.container_registrations);
         tvEmptyState = findViewById(R.id.tv_empty_state);
 
-        Button eventButton1 = findViewById(R.id.btn_join_event_1);
-        eventButton1.setOnClickListener(v ->
-                onJoinEventClick(eventButton1, getString(R.string.event_name_1), getString(R.string.event_date_1))
-        );
+        eventButton1 = findViewById(R.id.btn_join_event_1);
+        eventButton1.setOnClickListener(v -> onJoinEventClick(
+                SOURCE_EVENT_1,
+                eventButton1,
+                getString(R.string.event_name_1),
+                getString(R.string.event_date_1) + " · " + getString(R.string.event_location_1)
+        ));
 
-        Button eventButton2 = findViewById(R.id.btn_join_event_2);
-        eventButton2.setOnClickListener(v ->
-                onJoinEventClick(eventButton2, getString(R.string.event_name_2), getString(R.string.event_date_2))
-        );
+        eventButton2 = findViewById(R.id.btn_join_event_2);
+        eventButton2.setOnClickListener(v -> onJoinEventClick(
+                SOURCE_EVENT_2,
+                eventButton2,
+                getString(R.string.event_name_2),
+                getString(R.string.event_date_2) + " · " + getString(R.string.event_location_2)
+        ));
 
         findViewById(R.id.nav_activities).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, ActividadesActivity.class))
@@ -49,18 +63,31 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void onJoinEventClick(Button button, String eventName, String eventDate) {
-        addRegistrationDynamically(eventName, eventDate, button);
-
-        button.setEnabled(false);
-        button.setText(R.string.btn_joined);
-        button.setTextColor(getResources().getColor(R.color.white));
-        button.setBackgroundColor(getResources().getColor(R.color.accent_darker));
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshRegistrationsList();
+        syncEventButtonState(eventButton1, SOURCE_EVENT_1);
+        syncEventButtonState(eventButton2, SOURCE_EVENT_2);
     }
 
-    private void addRegistrationDynamically(String eventName, String eventDate, Button eventButton) {
-        registrationCounter++;
+    private void onJoinEventClick(String sourceId, Button button, String name, String detail) {
+        AppState.getInstance().addRegistration(sourceId, name, detail);
+        refreshRegistrationsList();
+        markButtonAsJoined(button);
+    }
 
+    private void refreshRegistrationsList() {
+        containerRegistrations.removeAllViews();
+
+        List<AppState.Registration> registrations = AppState.getInstance().getRegistrations();
+        for (AppState.Registration registration : registrations) {
+            containerRegistrations.addView(buildRegistrationCard(registration));
+        }
+        updateEmptyState();
+    }
+
+    private View buildRegistrationCard(AppState.Registration registration) {
         LinearLayout card = new LinearLayout(this);
         card.setOrientation(LinearLayout.VERTICAL);
         card.setPadding(32, 24, 32, 24);
@@ -74,44 +101,63 @@ public class MainActivity extends AppCompatActivity {
         card.setLayoutParams(cardParams);
 
         TextView nameTextView = new TextView(this);
-        nameTextView.setText(eventName);
+        nameTextView.setText(registration.name);
         nameTextView.setTextColor(getResources().getColor(R.color.text_primary));
         nameTextView.setTextSize(16);
         nameTextView.setTypeface(null, android.graphics.Typeface.BOLD);
 
-        TextView dateTextView = new TextView(this);
-        dateTextView.setText(eventDate);
-        dateTextView.setTextColor(getResources().getColor(R.color.text_secondary));
-        dateTextView.setTextSize(14);
+        TextView detailTextView = new TextView(this);
+        detailTextView.setText(registration.detail);
+        detailTextView.setTextColor(getResources().getColor(R.color.text_secondary));
+        detailTextView.setTextSize(14);
 
-        TextView statusTextView = new TextView(this);
-        statusTextView.setText("Ticket ID: #PAS-" + (4800 + registrationCounter));
-        statusTextView.setTextColor(getResources().getColor(R.color.accent_darker));
-        statusTextView.setTextSize(12);
+        TextView ticketTextView = new TextView(this);
+        ticketTextView.setText("Ticket ID: " + registration.ticketId);
+        ticketTextView.setTextColor(getResources().getColor(R.color.accent_darker));
+        ticketTextView.setTextSize(12);
 
         Button cancelButton = new Button(this);
         cancelButton.setText(R.string.btn_cancel);
-        final LinearLayout cardRef = card;
         cancelButton.setOnClickListener(v -> {
-            containerRegistrations.removeView(cardRef);
-            updateEmptyState();
-            reactivateEventButton(eventButton);
+            AppState.getInstance().removeRegistration(registration.sourceId);
+            refreshRegistrationsList();
+            reactivateIfLocalButton(registration.sourceId);
         });
 
         card.addView(nameTextView);
-        card.addView(dateTextView);
-        card.addView(statusTextView);
+        card.addView(detailTextView);
+        card.addView(ticketTextView);
         card.addView(cancelButton);
 
-        containerRegistrations.addView(card);
-        updateEmptyState();
+        return card;
     }
 
-    private void reactivateEventButton(Button button) {
+    private void reactivateIfLocalButton(String sourceId) {
+        if (SOURCE_EVENT_1.equals(sourceId)) {
+            resetButton(eventButton1);
+        } else if (SOURCE_EVENT_2.equals(sourceId)) {
+            resetButton(eventButton2);
+        }
+    }
+
+    private void syncEventButtonState(Button button, String sourceId) {
+        if (AppState.getInstance().isRegistered(sourceId)) {
+            markButtonAsJoined(button);
+        } else {
+            resetButton(button);
+        }
+    }
+
+    private void markButtonAsJoined(Button button) {
+        button.setEnabled(false);
+        button.setText(R.string.btn_joined);
+        button.setBackgroundTintList(getResources().getColorStateList(R.color.accent_darker));
+    }
+
+    private void resetButton(Button button) {
         button.setEnabled(true);
         button.setText(R.string.btn_join_event);
-        button.setTextColor(getResources().getColor(R.color.white));
-        button.setBackgroundColor(getResources().getColor(R.color.primary));
+        button.setBackgroundTintList(getResources().getColorStateList(R.color.primary));
     }
 
     private void updateEmptyState() {
