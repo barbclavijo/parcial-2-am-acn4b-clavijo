@@ -60,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.nav_profile).setOnClickListener(v ->
                 startActivity(new Intent(MainActivity.this, PerfilActivity.class))
         );
+        findViewById(R.id.iv_profile_icon).setOnClickListener(v ->
+                startActivity(new Intent(this, PerfilActivity.class))
+        );
     }
 
     @Override
