@@ -53,4 +53,18 @@
     <string name="btn_view_activity">Ver actividad / Reservar</string>
     <string name="btn_reserved">Reservado</string>
     <string name="empty_search_results">No encontramos actividades con ese nombre</string>
+    <string name="events_title">Eventos y Torneos</string>
+    <string name="events_subtitle">Sumate a la vida social del club</string>
+    <string name="my_registrations_label">Mis Inscripciones</string>
+    <string name="my_registrations_status">1 actividad confirmada</string>
+    <string name="my_registrations_badge">Activo</string>
+    <string name="filter_events_all">Todos</string>
+    <string name="filter_events_sports">Torneos Deportivos</string>
+    <string name="filter_events_social">Encuentros Sociales</string>
+    <string name="event1_description">Modalidad dobles mixtos y caballeros. Fase de grupos y eliminación directa.</string>
+    <string name="event2_description">Tarde de asado, música y juegos para toda la familia.</string>
+    <string name="event1_price_label">Inscripción x pareja</string>
+    <string name="event1_price">$ 24.500</string>
+    <string name="event2_price_label">Entrada general</string>
+    <string name="event2_price">$ 8.000</string>
 </resources>
