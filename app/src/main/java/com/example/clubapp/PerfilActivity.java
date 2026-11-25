@@ -23,8 +23,11 @@ public class PerfilActivity extends AppCompatActivity {
         Button logoutButton = findViewById(R.id.btn_logout);
         logoutButton.setOnClickListener(v -> onLogoutClick());
 
-        findViewById(R.id.nav_home).setOnClickListener(v -> finish());
-        findViewById(R.id.nav_activities).setOnClickListener(v ->
+        findViewById(R.id.nav_home).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });        findViewById(R.id.nav_activities).setOnClickListener(v ->
                 startActivity(new Intent(this, ActividadesActivity.class))
         );
         findViewById(R.id.nav_events).setOnClickListener(v ->
