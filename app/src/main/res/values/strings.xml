@@ -36,9 +36,13 @@
     <string name="remember_session">Recordar mi sesión</string>
     <string name="btn_login">Iniciar Sesión</string>
     <string name="error_empty_fields">Completá ambos campos para continuar</string>
-    <string name="error_invalid_email">Ingresá un email válido</string>
-    <string name="error_invalid_credentials">Socio o contraseña incorrectos</string>
+    <string name="error_invalid_credentials">Email o contraseña incorrectos</string>
     <string name="new_member_link">Soy nuevo socio / Quiero asociarme</string>
+    <string name="logging_in">Ingresando...</string>
+    <string name="error_network">Sin conexión. Revisá tu internet e intentá de nuevo</string>
+    <string name="error_enter_email_first">Ingresá tu email para recuperar la clave</string>
+    <string name="reset_email_sent">Te enviamos un email para restablecer tu clave</string>
+    <string name="error_invalid_email">Ingresá un email válido</string>
     <string name="activities_title">Actividades</string>
     <string name="activities_subtitle">Encontrá una actividad para vos</string>
     <string name="hint_search_activity">Buscar actividad...</string>
