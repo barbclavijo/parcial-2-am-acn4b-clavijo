@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
@@ -15,12 +15,11 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String SOURCE_EVENT_1 = "event_padel";
     private static final String SOURCE_EVENT_2 = "event_asado";
-
     private LinearLayout containerRegistrations;
     private TextView tvEmptyState;
-
     private Button eventButton1;
     private Button eventButton2;
+    private ImageView ivMemberPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         containerRegistrations = findViewById(R.id.container_registrations);
         tvEmptyState = findViewById(R.id.tv_empty_state);
-
+        ivMemberPhoto = findViewById(R.id.iv_member_photo);
         eventButton1 = findViewById(R.id.btn_join_event_1);
         eventButton1.setOnClickListener(v -> onJoinEventClick(
                 SOURCE_EVENT_1,
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         refreshRegistrationsList();
         syncEventButtonState(eventButton1, SOURCE_EVENT_1);
         syncEventButtonState(eventButton2, SOURCE_EVENT_2);
+        ProfilePhoto.applyTo(this, ivMemberPhoto);
     }
 
     private void onJoinEventClick(String sourceId, Button button, String name, String detail) {
