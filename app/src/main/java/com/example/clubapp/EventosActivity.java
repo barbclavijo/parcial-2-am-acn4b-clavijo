@@ -1,5 +1,6 @@
 package com.example.clubapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +16,9 @@ public class EventosActivity extends AppCompatActivity {
     private static final String CATEGORY_ALL = "all";
     private static final String CATEGORY_SPORTS = "sports";
     private static final String CATEGORY_SOCIAL = "social";
+
+    private static final String SOURCE_EVENT_1 = "event_padel";
+    private static final String SOURCE_EVENT_2 = "event_asado";
 
     private EditText etSearch;
     private TextView tvEmptySearch;
@@ -26,6 +29,9 @@ public class EventosActivity extends AppCompatActivity {
     private Button btnFilterAll;
     private Button btnFilterSports;
     private Button btnFilterSocial;
+
+    private Button joinButton1;
+    private Button joinButton2;
 
     private String currentFilter = CATEGORY_ALL;
 
@@ -64,25 +70,66 @@ public class EventosActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        setupJoinButton(R.id.btn_join_event_1);
-        setupJoinButton(R.id.btn_join_event_2);
+        joinButton1 = setupJoinButton(
+                R.id.btn_join_event_1,
+                SOURCE_EVENT_1,
+                getString(R.string.event_name_1),
+                getString(R.string.event_date_1) + " · " + getString(R.string.event_location_1)
+        );
 
-        findViewById(R.id.nav_home).setOnClickListener(v -> finish());
-        findViewById(R.id.nav_activities).setOnClickListener(v ->
-                startActivity(new android.content.Intent(this, ActividadesActivity.class))
+        joinButton2 = setupJoinButton(
+                R.id.btn_join_event_2,
+                SOURCE_EVENT_2,
+                getString(R.string.event_name_2),
+                getString(R.string.event_date_2) + " · " + getString(R.string.event_location_2)
+        );
+
+        findViewById(R.id.nav_home).setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });        findViewById(R.id.nav_activities).setOnClickListener(v ->
+                startActivity(new Intent(this, ActividadesActivity.class))
         );
         findViewById(R.id.nav_profile).setOnClickListener(v ->
-                startActivity(new android.content.Intent(this, PerfilActivity.class))
+                startActivity(new Intent(this, PerfilActivity.class))
         );
     }
 
-    private void setupJoinButton(int buttonId) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        syncButtonState(joinButton1, SOURCE_EVENT_1);
+        syncButtonState(joinButton2, SOURCE_EVENT_2);
+    }
+
+    private Button setupJoinButton(int buttonId, String sourceId, String name, String detail) {
         Button button = findViewById(buttonId);
         button.setOnClickListener(v -> {
-            button.setEnabled(false);
-            button.setText(R.string.btn_joined);
-            button.setBackgroundTintList(getResources().getColorStateList(R.color.accent_darker));
+            AppState.getInstance().addRegistration(sourceId, name, detail);
+            markButtonAsJoined(button);
         });
+        return button;
+    }
+
+    private void syncButtonState(Button button, String sourceId) {
+        if (AppState.getInstance().isRegistered(sourceId)) {
+            markButtonAsJoined(button);
+        } else {
+            resetJoinButton(button);
+        }
+    }
+
+    private void markButtonAsJoined(Button button) {
+        button.setEnabled(false);
+        button.setText(R.string.btn_joined);
+        button.setBackgroundTintList(getResources().getColorStateList(R.color.accent_darker));
+    }
+
+    private void resetJoinButton(Button button) {
+        button.setEnabled(true);
+        button.setText(R.string.btn_join_event);
+        button.setBackgroundTintList(getResources().getColorStateList(R.color.primary));
     }
 
     private void onFilterSelected(String filter) {
