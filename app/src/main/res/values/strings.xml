@@ -39,4 +39,18 @@
     <string name="error_invalid_email">Ingresá un email válido</string>
     <string name="error_invalid_credentials">Socio o contraseña incorrectos</string>
     <string name="new_member_link">Soy nuevo socio / Quiero asociarme</string>
+    <string name="activities_title">Actividades</string>
+    <string name="activities_subtitle">Encontrá una actividad para vos</string>
+    <string name="hint_search_activity">Buscar actividad...</string>
+    <string name="filter_all">Todas</string>
+    <string name="filter_sports">Deportes</string>
+    <string name="filter_aquatic">Acuático</string>
+    <string name="category_sports">Deportes en Equipo</string>
+    <string name="category_aquatic">Acuático</string>
+    <string name="activity2_name">Natación Libre</string>
+    <string name="activity2_time">Sábados 10:30 hs</string>
+    <string name="activity2_location">Pileta Climatizada · Andarivel 3</string>
+    <string name="btn_view_activity">Ver actividad / Reservar</string>
+    <string name="btn_reserved">Reservado</string>
+    <string name="empty_search_results">No encontramos actividades con ese nombre</string>
 </resources>
