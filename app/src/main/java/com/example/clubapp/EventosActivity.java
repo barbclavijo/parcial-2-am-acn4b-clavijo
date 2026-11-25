@@ -4,12 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EventosActivity extends AppCompatActivity {
 
@@ -17,22 +25,17 @@ public class EventosActivity extends AppCompatActivity {
     private static final String CATEGORY_SPORTS = "sports";
     private static final String CATEGORY_SOCIAL = "social";
 
-    private static final String SOURCE_EVENT_1 = "event_padel";
-    private static final String SOURCE_EVENT_2 = "event_asado";
-
     private EditText etSearch;
     private TextView tvEmptySearch;
-
-    private View cardEvent1;
-    private View cardEvent2;
+    private TextView tvStatus;
+    private Button btnRetry;
+    private LinearLayout containerEvents;
 
     private Button btnFilterAll;
     private Button btnFilterSports;
     private Button btnFilterSocial;
 
-    private Button joinButton1;
-    private Button joinButton2;
-
+    private final List<View> eventCards = new ArrayList<>();
     private String currentFilter = CATEGORY_ALL;
 
     @Override
@@ -42,12 +45,9 @@ public class EventosActivity extends AppCompatActivity {
 
         etSearch = findViewById(R.id.et_search_event);
         tvEmptySearch = findViewById(R.id.tv_empty_search_events);
-
-        cardEvent1 = findViewById(R.id.card_event_1);
-        cardEvent1.setTag(CATEGORY_SPORTS);
-
-        cardEvent2 = findViewById(R.id.card_event_2);
-        cardEvent2.setTag(CATEGORY_SOCIAL);
+        tvStatus = findViewById(R.id.tv_events_status);
+        btnRetry = findViewById(R.id.btn_retry);
+        containerEvents = findViewById(R.id.container_events_list);
 
         btnFilterAll = findViewById(R.id.btn_filter_events_all);
         btnFilterSports = findViewById(R.id.btn_filter_events_sports);
@@ -70,46 +70,113 @@ public class EventosActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {}
         });
 
-        joinButton1 = setupJoinButton(
-                R.id.btn_join_event_1,
-                SOURCE_EVENT_1,
-                getString(R.string.event_name_1),
-                getString(R.string.event_date_1) + " · " + getString(R.string.event_location_1)
-        );
-
-        joinButton2 = setupJoinButton(
-                R.id.btn_join_event_2,
-                SOURCE_EVENT_2,
-                getString(R.string.event_name_2),
-                getString(R.string.event_date_2) + " · " + getString(R.string.event_location_2)
-        );
+        btnRetry.setOnClickListener(v -> loadEvents());
 
         findViewById(R.id.nav_home).setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
-        });        findViewById(R.id.nav_activities).setOnClickListener(v ->
+        });
+        findViewById(R.id.nav_activities).setOnClickListener(v ->
                 startActivity(new Intent(this, ActividadesActivity.class))
         );
         findViewById(R.id.nav_profile).setOnClickListener(v ->
                 startActivity(new Intent(this, PerfilActivity.class))
         );
+
+        loadEvents();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        syncButtonState(joinButton1, SOURCE_EVENT_1);
-        syncButtonState(joinButton2, SOURCE_EVENT_2);
+        for (View card : eventCards) {
+            Event event = (Event) card.getTag();
+            syncButtonState(card.findViewById(R.id.btn_join_event), event.getId());
+        }
     }
 
-    private Button setupJoinButton(int buttonId, String sourceId, String name, String detail) {
-        Button button = findViewById(buttonId);
-        button.setOnClickListener(v -> {
-            AppState.getInstance().addRegistration(sourceId, name, detail);
-            markButtonAsJoined(button);
+    private void loadEvents() {
+        showStatus(getString(R.string.loading_events), false);
+        EventsApi.fetch(getString(R.string.url_events), new EventsApi.Listener() {
+            @Override
+            public void onSuccess(List<Event> events) {
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    hideStatus();
+                    showEvents(events);
+                });
+            }
+
+            @Override
+            public void onError() {
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    loadFallbackEvents();
+                });
+            }
         });
-        return button;
+    }
+
+    // sin conexión: se usa la copia local guardada en res/raw
+    private void loadFallbackEvents() {
+        try {
+            String json = EventsApi.readRaw(this, R.raw.events_fallback);
+            showEvents(EventsApi.parseEvents(json));
+            showStatus(getString(R.string.events_offline), true);
+        } catch (Exception e) {
+            showStatus(getString(R.string.error_loading_events), true);
+        }
+    }
+
+    private void showStatus(String message, boolean showRetry) {
+        tvStatus.setText(message);
+        tvStatus.setVisibility(View.VISIBLE);
+        btnRetry.setVisibility(showRetry ? View.VISIBLE : View.GONE);
+    }
+
+    private void hideStatus() {
+        tvStatus.setVisibility(View.GONE);
+        btnRetry.setVisibility(View.GONE);
+    }
+
+    private void showEvents(List<Event> events) {
+        containerEvents.removeAllViews();
+        eventCards.clear();
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (Event event : events) {
+            View card = inflater.inflate(R.layout.item_event, containerEvents, false);
+            bindEventCard(card, event);
+            card.setTag(event);
+            eventCards.add(card);
+            containerEvents.addView(card);
+        }
+        applyFilters();
+    }
+
+    private void bindEventCard(View card, Event event) {
+        ((TextView) card.findViewById(R.id.tv_event_name)).setText(event.getName());
+        ((TextView) card.findViewById(R.id.tv_event_description)).setText(event.getDescription());
+        ((TextView) card.findViewById(R.id.tv_event_date)).setText(event.getDate());
+        ((TextView) card.findViewById(R.id.tv_event_location)).setText(event.getLocation());
+        ((TextView) card.findViewById(R.id.tv_event_price_label)).setText(event.getPriceLabel());
+        ((TextView) card.findViewById(R.id.tv_event_price)).setText(event.getPrice());
+
+        ImageView image = card.findViewById(R.id.iv_event_image);
+        Glide.with(this)
+                .load(event.getImageUrl())
+                .placeholder(R.color.icon_bg)
+                .error(R.color.icon_bg)
+                .into(image);
+
+        Button joinButton = card.findViewById(R.id.btn_join_event);
+        String detail = event.getDate() + " · " + event.getLocation();
+        joinButton.setOnClickListener(v -> {
+            AppState.getInstance().addRegistration(event.getId(), event.getName(), detail);
+            markButtonAsJoined(joinButton);
+        });
+        syncButtonState(joinButton, event.getId());
     }
 
     private void syncButtonState(Button button, String sourceId) {
@@ -158,22 +225,18 @@ public class EventosActivity extends AppCompatActivity {
         String query = etSearch.getText().toString().trim().toLowerCase();
         boolean anyVisible = false;
 
-        anyVisible |= applyFilterToCard(cardEvent1, R.id.tv_event_1_name, query);
-        anyVisible |= applyFilterToCard(cardEvent2, R.id.tv_event_2_name, query);
+        for (View card : eventCards) {
+            Event event = (Event) card.getTag();
+            boolean matchesCategory = CATEGORY_ALL.equals(currentFilter)
+                    || currentFilter.equals(event.getCategory());
+            boolean matchesSearch = query.isEmpty()
+                    || event.getName().toLowerCase().contains(query);
+            boolean visible = matchesCategory && matchesSearch;
 
-        tvEmptySearch.setVisibility(anyVisible ? View.GONE : View.VISIBLE);
-    }
+            card.setVisibility(visible ? View.VISIBLE : View.GONE);
+            anyVisible |= visible;
+        }
 
-    private boolean applyFilterToCard(View card, int nameViewId, String query) {
-        String category = (String) card.getTag();
-        TextView nameTextView = findViewById(nameViewId);
-        String name = nameTextView.getText().toString().toLowerCase();
-
-        boolean matchesCategory = CATEGORY_ALL.equals(currentFilter) || category.equals(currentFilter);
-        boolean matchesSearch = query.isEmpty() || name.contains(query);
-        boolean visible = matchesCategory && matchesSearch;
-
-        card.setVisibility(visible ? View.VISIBLE : View.GONE);
-        return visible;
+        tvEmptySearch.setVisibility(!eventCards.isEmpty() && !anyVisible ? View.VISIBLE : View.GONE);
     }
 }

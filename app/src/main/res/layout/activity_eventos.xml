@@ -156,215 +156,31 @@
                 android:visibility="gone"
                 android:layout_marginBottom="@dimen/spacing_medium" />
 
+            <TextView
+                android:id="@+id/tv_events_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_body"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/spacing_small" />
+
+            <Button
+                android:id="@+id/btn_retry"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/primary"
+                android:textColor="@color/white"
+                android:text="@string/btn_retry"
+                android:visibility="gone"
+                android:layout_marginBottom="@dimen/spacing_medium" />
+
             <LinearLayout
                 android:id="@+id/container_events_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical" />
 
-                <!-- card Torneo -->
-                <LinearLayout
-                    android:id="@+id/card_event_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/white"
-                    android:layout_marginBottom="@dimen/spacing_medium">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/event_padel"
-                        android:contentDescription="@string/event_name_1" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/spacing_medium">
-
-                        <TextView
-                            android:id="@+id/tv_event_1_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/event_name_1"
-                            android:textColor="@color/text_primary"
-                            android:textSize="@dimen/text_subtitle"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/event1_description"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/text_body"
-                            android:layout_marginBottom="@dimen/spacing_small" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@color/icon_bg"
-                            android:padding="@dimen/spacing_small"
-                            android:layout_marginBottom="@dimen/spacing_small">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/event_date_1"
-                                android:textColor="@color/text_primary"
-                                android:textSize="@dimen/text_body" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/event_location_1"
-                                android:textColor="@color/text_primary"
-                                android:textSize="@dimen/text_body" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/event1_price_label"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/event1_price"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="@dimen/text_subtitle"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <Button
-                                android:id="@+id/btn_join_event_1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/primary"
-                                android:textColor="@color/white"
-                                android:text="@string/btn_join_event" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- card Gran Asado y Peña Familiar -->
-                <LinearLayout
-                    android:id="@+id/card_event_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:background="@color/white"
-                    android:layout_marginBottom="@dimen/spacing_medium">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="160dp"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/event_asado"
-                        android:contentDescription="@string/event_name_2" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/spacing_medium">
-
-                        <TextView
-                            android:id="@+id/tv_event_2_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/event_name_2"
-                            android:textColor="@color/text_primary"
-                            android:textSize="@dimen/text_subtitle"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/event2_description"
-                            android:textColor="@color/text_secondary"
-                            android:textSize="@dimen/text_body"
-                            android:layout_marginBottom="@dimen/spacing_small" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            android:background="@color/icon_bg"
-                            android:padding="@dimen/spacing_small"
-                            android:layout_marginBottom="@dimen/spacing_small">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/event_date_2"
-                                android:textColor="@color/text_primary"
-                                android:textSize="@dimen/text_body" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/event_location_2"
-                                android:textColor="@color/text_primary"
-                                android:textSize="@dimen/text_body" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="center_vertical">
-
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/event2_price_label"
-                                    android:textColor="@color/text_secondary"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/event2_price"
-                                    android:textColor="@color/text_primary"
-                                    android:textSize="@dimen/text_subtitle"
-                                    android:textStyle="bold" />
-                            </LinearLayout>
-
-                            <Button
-                                android:id="@+id/btn_join_event_2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:backgroundTint="@color/primary"
-                                android:textColor="@color/white"
-                                android:text="@string/btn_join_event" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

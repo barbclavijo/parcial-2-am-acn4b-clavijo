@@ -88,4 +88,9 @@
     <string name="change_photo">Cambiar foto</string>
     <string name="photo_updated">Foto de perfil actualizada</string>
     <string name="photo_error">No se pudo cargar la imagen</string>
+    <string name="url_events">https://raw.githubusercontent.com/barbclavijo/parcial-2-am-acn4b-clavijo/master/data/events.json</string>
+    <string name="loading_events">Cargando eventos...</string>
+    <string name="events_offline">Sin conexión: mostrando los últimos eventos disponibles</string>
+    <string name="error_loading_events">No pudimos cargar los eventos</string>
+    <string name="btn_retry">Reintentar</string>
 </resources>
