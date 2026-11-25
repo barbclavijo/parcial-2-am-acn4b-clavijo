@@ -16,9 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String EXTRA_MEMBER_NAME = "extra_member_name";
-
-    // credenciales de demo: a nivel de interacción, como pide la consigna
-    // (no hay un sistema productivo real detrás)
     private static final String DEMO_EMAIL = "mariano@clubdeportivo.com";
     private static final String DEMO_PASSWORD = "club2026";
     private static final String DEMO_MEMBER_NAME = "Mariano Benítez";
@@ -88,8 +85,6 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         CheckBox rememberSession = findViewById(R.id.cb_remember_session);
-        // rememberSession.isChecked() queda disponible para cuando sumemos
-        // persistencia real de sesión (SharedPreferences / Firebase) más adelante.
 
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         intent.putExtra(EXTRA_MEMBER_NAME, DEMO_MEMBER_NAME);
