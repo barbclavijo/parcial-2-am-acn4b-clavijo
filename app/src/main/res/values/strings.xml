@@ -85,4 +85,7 @@
     <string name="member_email">mariano@clubdeportivo.com</string>
     <string name="member_phone">+54 9 11 2345-6789</string>
     <string name="btn_logout">Cerrar sesión</string>
+    <string name="change_photo">Cambiar foto</string>
+    <string name="photo_updated">Foto de perfil actualizada</string>
+    <string name="photo_error">No se pudo cargar la imagen</string>
 </resources>
