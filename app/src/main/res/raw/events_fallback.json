@@ -1,0 +1,26 @@
+{
+  "events": [
+    {
+      "id": "event_padel",
+      "category": "sports",
+      "name": "Torneo de Pádel",
+      "description": "Modalidad dobles mixtos y caballeros. Fase de grupos y eliminación directa.",
+      "date": "Sábado 17 Octubre · 15:00",
+      "location": "Canchas de Cristal 1 y 2",
+      "priceLabel": "Inscripción x pareja",
+      "price": "$ 24.500",
+      "imageUrl": "https://raw.githubusercontent.com/barbclavijo/parcial-2-am-acn4b-clavijo/master/images/event_padel.jpg"
+    },
+    {
+      "id": "event_asado",
+      "category": "social",
+      "name": "Gran Asado y Peña Familiar",
+      "description": "Tarde de asado, música y juegos para toda la familia.",
+      "date": "Domingo 25 Octubre · 13:00",
+      "location": "Quincho Central y Parque Arbolado",
+      "priceLabel": "Entrada general",
+      "price": "$ 8.000",
+      "imageUrl": "https://raw.githubusercontent.com/barbclavijo/parcial-2-am-acn4b-clavijo/master/images/event_asado.jpg"
+    }
+  ]
+}
