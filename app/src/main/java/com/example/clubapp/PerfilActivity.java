@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -64,6 +65,12 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void onLogoutClick() {
+        FirebaseAuth.getInstance().signOut();
+        getSharedPreferences(LoginActivity.PREFS_NAME, MODE_PRIVATE)
+                .edit()
+                .putBoolean(LoginActivity.PREF_REMEMBER_SESSION, false)
+                .apply();
+
         Intent intent = new Intent(PerfilActivity.this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
