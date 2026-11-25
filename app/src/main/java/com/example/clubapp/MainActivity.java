@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         findViewById(R.id.nav_activities).setOnClickListener(v ->
-                Toast.makeText(this, R.string.nav_coming_soon, Toast.LENGTH_SHORT).show()
+                startActivity(new Intent(MainActivity.this, ActividadesActivity.class))
         );
         findViewById(R.id.nav_events).setOnClickListener(v ->
                 Toast.makeText(this, R.string.nav_coming_soon, Toast.LENGTH_SHORT).show()
